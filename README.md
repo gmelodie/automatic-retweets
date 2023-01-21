@@ -1,2 +1,13 @@
 # automatic-retweets
 Automatically retweets from a target account on your own account
+
+Add your creds on `env` and change the name to `.env`
+```
+CONSUMER_KEY=your_consumer_key          # also called API Key
+CONSUMER_SECRET=your_consumer_secret    # also called API Key Secret
+BEARER_TOKEN=your_bearer_token
+
+# generate this by going to Developer Portal
+ACCESS_TOKEN_KEY=your_access_token
+ACCESS_TOKEN_SECRET=your_access_token_secret
+```
