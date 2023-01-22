@@ -11,11 +11,12 @@ access_token=os.environ.get("ACCESS_TOKEN_KEY")
 access_token_secret=os.environ.get("ACCESS_TOKEN_SECRET")
 bearer_token=os.environ.get("BEARER_TOKEN")
 
-latest_retweeted = None
+retweeted = set()
 
 target_username = "Estuary_Tech"
 query = f"from:{target_username}"
 
+one_hour = 60*60
 
 if __name__ == "__main__":
     client = tweepy.Client(
@@ -25,13 +26,22 @@ if __name__ == "__main__":
     )
 
     target_user = client.get_user(username=target_username)
-    print(f"Retweeting from {target_username}")
 
     while True:
-        latest_tweet = client.search_recent_tweets(query, max_results=10).data[0]
-        if latest_tweet != latest_retweeted or latest_retweeted is None:
-            print(f"Retweeting {latest_tweet.id} now: '{latest_tweet.text}'")
-            client.retweet(latest_tweet.id)
-            latest_retweeted = latest_tweet
+        try:
+            latest_tweets = client.search_recent_tweets(query, max_results=20).data
+            for tweet in latest_tweets:
+                time.sleep(2)
+                if tweet.id not in retweeted:
+                    print(f"Retweeting {tweet.id} now: '{tweet.text}'")
+                    client.retweet(tweet.id)
+                    client.like(tweet.id)
+                    retweeted.add(tweet.id)
+                else:
+                    print(f"Skipping tweet {tweet.id}. Already retweeted.")
+        except:
+            print("Twitter doesn't like me, waiting 5 minutes and retrying...")
+            time.sleep(one_hour)
         time.sleep(60)
+
 
