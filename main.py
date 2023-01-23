@@ -41,7 +41,7 @@ if __name__ == "__main__":
                     print(f"Skipping tweet {tweet.id}. Already retweeted.")
         except:
             print("Twitter doesn't like me, waiting 5 minutes and retrying...")
-            time.sleep(one_hour)
-        time.sleep(60)
+            time.sleep(5*60)
+        time.sleep(one_hour)
 
 
